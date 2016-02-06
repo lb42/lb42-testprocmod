@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="file:/home/lou/Public/TEI-Simple/trunk/processingModel/out/testprocmod.rnc" type="application/relax-ng-compact-syntax"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0">
+    <teiHeader>
+        <fileDesc>
+            <titleStmt>
+                <title>ProcMod Exercise</title>
+            </titleStmt>
+            <publicationStmt>
+                <distributor>Lou Burnard Consulting</distributor>
+            </publicationStmt>
+            <sourceDesc>
+                <p>All my own work</p>
+            </sourceDesc>
+        </fileDesc>
+    </teiHeader>
+    <text>
+        <body>
+            <div>
+                <head>This is the first head in a division</head>
+                <p>A paragraph</p>
+                <p>Another para, containing a choice of evils : <choice>
+                        <corr>O no it isn't</corr>
+                        <sic>O yes it is</sic>
+                    </choice></p>
+                <p>This third paragraph has a quotation <quote>The Devil finds hands for Idle
+                        Work</quote></p>
+                <lg>
+                    <l>I'm a little teapot, short and stout</l>
+                    <l>Here's my handle; here's my spout</l>
+                </lg>
+                <p> In this paragraph, we will find some strange things. For example, here's
+                        <title>A title</title>. And then a name <name>Nomen</name>. And even 
+                    <pb n="123"/> (now after a page break)
+                    <ref target="#chap2">On to the next chapter</ref>
+                </p>
+            </div><div n="two" xml:id="chap2">
+                <head>Chapter Two</head>
+                <head>A two-headed chapter</head>
+                <pb rend="line" n="345"/>
+                <cb/>
+                <p>Column 1 starts here</p>
+                <p>And continues
+                <cb/>
+                ooh column 2 already!</p>
+                <p>And another para for col2</p>
+            </div>
+        </body>
+    </text>
+</TEI>

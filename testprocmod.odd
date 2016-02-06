@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="../p5odds.rnc" type="application/relax-ng-compact-syntax"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xml:lang="en">
+   <teiHeader>
+      <fileDesc>
+         <titleStmt>
+            <title>TEI procmod test 2</title>
+         </titleStmt>
+         <publicationStmt>
+            <p>Unpublished draft</p>
+         </publicationStmt>
+         <sourceDesc>
+            <p>derived from ti.odd, part of TEI-Simple initial test files </p>
+         </sourceDesc>
+      </fileDesc>
+   </teiHeader>
+   <text>
+      <body>
+         <p>Here we provide an element for each suggested behaviour</p>
+         <schemaSpec ident="teipm" start="TEI div">
+            <moduleRef key="tei"/>
+            <moduleRef key="core"
+               include="addrLine address author cb choice cit corr email graphic 
+               head item list l lb lg name note p 
+               pb ptr quote ref sic term title"/>
+            <moduleRef key="header"
+               include="availability change distributor fileDesc idno keywords 
+               langUsage language licence profileDesc publicationStmt revisionDesc 
+               sourceDesc teiHeader textClass titleStmt"/>
+            <moduleRef key="textstructure" include="TEI back body div front text"/>
+            <moduleRef key="linking" include="ab anchor"/>
+            <moduleRef key="figures" include="cell figure row table"/>
+            <moduleRef key="gaiji" include="g"/>
+            
+            <elementSpec ident="choice" mode="change">
+               <modelGrp output="web">
+                  <model predicate="sic and corr" behaviour="alternate">
+                     <param name="default">corr[@cert='high']</param>
+                     <param name="alternate">sic</param>
+                  </model>
+                  <model predicate="abbr and expan" behaviour="alternate">
+                     <param name="default">expan[1]</param>
+                     <param name="alternate">abbr</param>
+                  </model>
+                  <model predicate="orig and reg" behaviour="alternate">
+                     <param name="default">reg</param>
+                     <param name="alternate">orig</param>
+                  </model>
+               </modelGrp>
+            </elementSpec>
+            
+            <elementSpec ident="anchor" mode="change">
+               <model behaviour="anchor">
+                  <param name="id">@xml:id</param>
+               </model>
+            </elementSpec>
+           
+            <elementSpec ident="ab" mode="change">
+               <model behaviour="block">
+                  <outputRendition> border-style: solid; border-width: medium; </outputRendition>
+               </model>
+            </elementSpec>
+            
+            <elementSpec ident="lb" mode="change">
+             
+              <model behaviour="break">
+                  <param name="label">@n</param>
+                  <param name="type">'line'</param>
+               </model>
+            </elementSpec>
+            <elementSpec ident="pb" mode="change">
+               <model behaviour="break">
+                  <param name="label">@facs</param>
+                  <param name="type">'page'</param>
+               </model>
+            </elementSpec>
+            
+            <elementSpec ident="cb" mode="change">
+               <model behaviour="break">
+                  <param name="label"/>
+                  <param name="type">'column'</param>
+               </model>
+            </elementSpec>
+            
+            <elementSpec ident="cell" mode="change">
+               <model behaviour="cell"/>
+            </elementSpec>
+            <elementSpec ident="cit" mode="change">
+               <model behaviour="cit">
+                  <param name="content">q|quote</param>
+                  <param name="source">bibl|ref</param>
+               </model>
+            </elementSpec>
+            <elementSpec ident="text" mode="change">
+               <model behaviour="document"/>
+            </elementSpec>
+            
+            <elementSpec ident="figure" mode="change">
+               <model behaviour="figure">
+                  <param name="title">head</param>
+               </model>
+            </elementSpec>
+            
+            <elementSpec ident="g" mode="change">
+               <model behaviour="glyph">
+                  <param name="uri">@ref</param>
+               </model>
+            </elementSpec>
+            
+            <elementSpec ident="graphic" mode="change">
+               <model behaviour="graphic">
+                  <param name="url">@url</param>
+                  <param name="width">@width</param>
+                  <param name="height">@height</param>
+                  <param name="scale">@scale</param>
+                  <param name="title">@n</param>
+                  <!-- graphics dont have titles; figures do -->
+               </model>
+            </elementSpec>
+            
+            <elementSpec ident="head" mode="change">
+               <model predicate="parent::div[@type='chapter']" behaviour="heading">
+                  <param name="level">"chapter"</param>
+               </model>
+               <model predicate="parent::div[not(@type)]" behaviour="heading">
+                  <param name="level">"part"</param>
+               </model>
+               <model predicate="parent::lg" behaviour="heading">
+                  <param name="level">"verse"</param>
+               </model>
+            </elementSpec>
+            
+            <!-- dunno what behaviour index is meant for -->
+            
+            <elementSpec ident="quote" mode="change">
+               <model predicate="ancestor::p" behaviour="inline">
+                  <outputRendition>font-style: italic;</outputRendition>
+               </model>
+               <model behaviour="block">
+                  <outputRendition>left-margin: 2em;</outputRendition>
+               </model>
+            </elementSpec>
+            
+            <elementSpec ident="list" mode="change">
+               <model behaviour="list"/>
+            </elementSpec>
+            
+            <elementSpec ident="item" mode="change">
+               <model behaviour="listitem"/>
+            </elementSpec>
+            
+            
+            <elementSpec ident="ref" mode="change">
+               <model behaviour="link">
+                  <param name="uri">@target</param>
+                  <param name="content">.</param>
+               </model>
+            </elementSpec>
+            
+            <elementSpec ident="teiHeader" mode="change">
+               <model behaviour="metadata"/>
+            </elementSpec>
+            
+            
+            <elementSpec ident="note" mode="change">
+               <modelSequence output="web">
+                  <model behaviour="inline">
+                     <param name="content">@n</param>
+                  </model>
+                  <model behaviour="note">
+                     <param name="place">'end'</param>
+                  </model>
+               </modelSequence>
+               <model predicate="ancestor::div[@type='ignoreMe']" behaviour="omit"/>
+            </elementSpec>
+            
+            <elementSpec ident="p" mode="change">
+               <model behaviour="paragraph"/>
+            </elementSpec>
+            
+            
+            <elementSpec ident="row" mode="change">
+               <model behaviour="row"/>
+            </elementSpec>
+            
+            <elementSpec ident="div" mode="change">
+               <model behaviour="section"/>
+            </elementSpec>
+               
+            <elementSpec ident="table" mode="change">
+               <model behaviour="table"/>
+            </elementSpec>
+            
+            <elementSpec ident="title" mode="change">
+               <model behaviour="title" predicate="parent::titleStmt"/>
+            </elementSpec>
+            
+            
+            <elementSpec ident="quote" mode="change">
+               <attList>
+                  <attDef ident="type" mode="delete"/>
+               </attList>
+               <model behaviour="paragraph">
+                  <outputRendition>font-style:italic;</outputRendition>
+               </model>
+            </elementSpec>
+            
+            
+            <elementSpec ident="lg" mode="change">
+               <attList>
+                  <attDef ident="type" mode="delete"/>
+               </attList>
+               <!-- line groups to be modeled as block divisions -->
+               <model behaviour="block"/>
+               <!--   class="verse"> -->
+            </elementSpec>
+            
+            <elementSpec ident="l" mode="change">
+               <model behaviour="verseLine"/>
+               <!-- not a predefine behaviour though -->
+            </elementSpec>
+            
+            <elementSpec ident="front" mode="change">
+               <model behaviour="block"/>
+            </elementSpec>
+            
+            <elementSpec ident="body" mode="change">
+               <model behaviour="block"/>
+            </elementSpec>
+            
+            <elementSpec ident="back" mode="change">
+               <model behaviour="block"/>
+            </elementSpec>
+            
+            
+            
+         </schemaSpec>
+      </body>
+   </text>
+</TEI>
