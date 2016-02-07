@@ -103,7 +103,7 @@
             
             <elementSpec ident="g" mode="change">
                <model behaviour="glyph">
-                  <param name="uri">@ref</param>
+                  <param name="link">@ref</param>
                </model>
             </elementSpec>
             
@@ -152,7 +152,7 @@
             
             <elementSpec ident="ref" mode="change">
                <model behaviour="link">
-                  <param name="uri">@target</param>
+                  <param name="link">@target</param>
                   <param name="content">.</param>
                </model>
             </elementSpec>
