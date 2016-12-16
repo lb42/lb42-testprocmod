@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-model href="../p5odds.rnc" type="application/relax-ng-compact-syntax"?>
 <TEI xmlns="http://www.tei-c.org/ns/1.0" xml:lang="en">
    <teiHeader>
       <fileDesc>
@@ -13,6 +12,9 @@
             <p>derived from ti.odd, part of TEI-Simple initial test files </p>
          </sourceDesc>
       </fileDesc>
+      <revisionDesc>
+         <change when="2016-12-16">check validity with TEI P5 3.1</change>
+      </revisionDesc>
    </teiHeader>
    <text>
       <body>
@@ -33,25 +35,45 @@
             <moduleRef key="gaiji" include="g"/>
             
             <elementSpec ident="choice" mode="change">
-               <modelGrp output="web">
-                  <model predicate="sic and corr" behaviour="alternate">
-                     <param name="default">corr[@cert='high']</param>
-                     <param name="alternate">sic</param>
-                  </model>
-                  <model predicate="abbr and expan" behaviour="alternate">
-                     <param name="default">expan[1]</param>
-                     <param name="alternate">abbr</param>
-                  </model>
-                  <model predicate="orig and reg" behaviour="alternate">
-                     <param name="default">reg</param>
-                     <param name="alternate">orig</param>
-                  </model>
-               </modelGrp>
+               <constraintSpec ident="choiceSize" scheme="isoschematron" mode="add">
+                  <constraint>
+                     <assert xmlns="http://purl.oclc.org/dsdl/schematron" test="count(*) &gt; 1"
+                        role="ERROR"> Element "<name/>" must have at least two child elements.</assert>
+                  </constraint>
+               </constraintSpec>
+               <constraintSpec ident="choiceContent" scheme="isoschematron" mode="add">
+                  <constraint>
+                     <assert xmlns="http://purl.oclc.org/dsdl/schematron"
+                        test="(tei:corr or tei:sic or tei:expan or     tei:abbr or tei:reg or tei:orig) and ((tei:corr and tei:sic) or (tei:expan     and tei:abbr) or (tei:reg and tei:orig))"
+                        role="ERROR"> Element "<name/>" must have corresponding corr/sic, expand/abbr,
+                        reg/orig </assert>
+                  </constraint>
+               </constraintSpec>
+               <model output="plain" predicate="sic and corr" behaviour="inline">
+                  <param name="content" value="corr[1]"/>
+               </model>
+               <model output="plain" predicate="abbr and expan" behaviour="inline">
+                  <param name="content" value="expan[1]"/>
+               </model>
+               <model output="plain" predicate="orig and reg" behaviour="inline">
+                  <param name="content" value="reg[1]"/>
+               </model>
+               <model predicate="sic and corr" behaviour="alternate">
+                  <param name="default" value="corr[1]"/>
+                  <param name="alternate" value="sic[1]"/>
+               </model>
+               <model predicate="abbr and expan" behaviour="alternate">
+                  <param name="default" value="expan[1]"/>
+                  <param name="alternate" value="abbr[1]"/>
+               </model>
+               <model predicate="orig and reg" behaviour="alternate">
+                  <param name="default" value="reg[1]"/>
+                  <param name="alternate" value="orig[1]"/>
+               </model>
             </elementSpec>
-            
             <elementSpec ident="anchor" mode="change">
                <model behaviour="anchor">
-                  <param name="id">@xml:id</param>
+                  <param name="id" value="@xml:id"/>
                </model>
             </elementSpec>
            
@@ -64,21 +86,21 @@
             <elementSpec ident="lb" mode="change">
              
               <model behaviour="break">
-                  <param name="label">@n</param>
-                  <param name="type">'line'</param>
+                  <param name="label" value="@n"/>
+                  <param name="type" value="'line'"/>
                </model>
             </elementSpec>
             <elementSpec ident="pb" mode="change">
                <model behaviour="break">
-                  <param name="label">@facs</param>
-                  <param name="type">'page'</param>
+                  <param name="label" value="@facs"/>
+                  <param name="type" value="'page'"/>
                </model>
             </elementSpec>
             
             <elementSpec ident="cb" mode="change">
                <model behaviour="break">
-                  <param name="label"/>
-                  <param name="type">'column'</param>
+                  <param name="label" value=""/>
+                  <param name="type" value="'column'"/>
                </model>
             </elementSpec>
             
@@ -87,8 +109,8 @@
             </elementSpec>
             <elementSpec ident="cit" mode="change">
                <model behaviour="cit">
-                  <param name="content">q|quote</param>
-                  <param name="source">bibl|ref</param>
+                  <param name="content" value="q|quote"/>
+                  <param name="source" value="bibl|ref"/>
                </model>
             </elementSpec>
             <elementSpec ident="text" mode="change">
@@ -97,36 +119,36 @@
             
             <elementSpec ident="figure" mode="change">
                <model behaviour="figure">
-                  <param name="title">head</param>
+                  <param name="title" value="head"/>
                </model>
             </elementSpec>
             
             <elementSpec ident="g" mode="change">
                <model behaviour="glyph">
-                  <param name="link">@ref</param>
+                  <param name="link" value="@ref"/>
                </model>
             </elementSpec>
             
             <elementSpec ident="graphic" mode="change">
                <model behaviour="graphic">
-                  <param name="url">@url</param>
-                  <param name="width">@width</param>
-                  <param name="height">@height</param>
-                  <param name="scale">@scale</param>
-                  <param name="title">@n</param>
+                  <param name="url" value="@url"/>
+                  <param name="width" value="@width"/>
+                  <param name="height" value="@height"/>
+                  <param name="scale" value="@scale"/>
+                  <param name="title" value="@n"/>
                   <!-- graphics dont have titles; figures do -->
                </model>
             </elementSpec>
             
             <elementSpec ident="head" mode="change">
                <model predicate="parent::div[@type='chapter']" behaviour="heading">
-                  <param name="level">"chapter"</param>
+                  <param name="level" value="chapter"/>
                </model>
                <model predicate="parent::div[not(@type)]" behaviour="heading">
-                  <param name="level">"part"</param>
+                  <param name="level" value="part"/>
                </model>
                <model predicate="parent::lg" behaviour="heading">
-                  <param name="level">"verse"</param>
+                  <param name="level" value="verse"/>
                </model>
             </elementSpec>
             
@@ -152,8 +174,8 @@
             
             <elementSpec ident="ref" mode="change">
                <model behaviour="link">
-                  <param name="link">@target</param>
-                  <param name="content">.</param>
+                  <param name="link" value="@target"/>
+                  <param name="content" value="."/>
                </model>
             </elementSpec>
             
@@ -165,10 +187,10 @@
             <elementSpec ident="note" mode="change">
                <modelSequence output="web">
                   <model behaviour="inline">
-                     <param name="content">@n</param>
+                     <param name="content" value="@n"/>
                   </model>
                   <model behaviour="note">
-                     <param name="place">'end'</param>
+                     <param name="place" value="'end'"/>
                   </model>
                </modelSequence>
                <model predicate="ancestor::div[@type='ignoreMe']" behaviour="omit"/>
